@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blaze 123 - Movie Hub</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b0b0b;
+    color: white;
+}
+
+/* LOGIN */
+#loginBox {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111827;
+}
+
+.login {
+    background: #1f2937;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+/* HEADER */
+header {
+    background: #111827;
+    padding: 15px;
+    text-align: center;
+    display: none;
+}
+
+header h1 {
+    color: #facc15;
+}
+
+/* CONTROLS */
+.controls {
+    display: none;
+    text-align: center;
+    padding: 10px;
+}
+
+button {
+    padding: 10px;
+    background: #38bdf8;
+    border: none;
+    cursor: pointer;
+}
+
+/* MOVIES */
+.container {
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    padding: 20px;
+}
+
+.movie {
+    background: #1f2937;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* PLAYER */
+.player {
+    display: none;
+    text-align: center;
+    padding: 10px;
+}
+
+iframe {
+    width: 90%;
+    height: 350px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+    <div class="login">
+        <h2>Blaze 123 Login 🔥</h2>
+        <input id="user" placeholder="Username">
+        <input id="pass" type="password" placeholder="Password">
+        <button onclick="login()">Sign In</button>
+    </div>
+</div>
+
+<!-- MAIN -->
+<header>
+    <h1>🔥 Blaze 123 Movie Hub</h1>
+</header>
+
+<div class="controls">
+    <input id="search" placeholder="🔎 Search movies..." onkeyup="searchMovie()">
+
+    <select onchange="filterCategory(this.value)">
+        <option value="all">All</option>
+        <option value="action">Action</option>
+        <option value="comedy">Comedy</option>
+        <option value="horror">Horror</option>
+    </select>
+
+    <input id="upload" placeholder="📤 YouTube Video ID">
+    <button onclick="addMovie()">Upload</button>
+</div>
+
+<!-- PLAYER -->
+<div class="player">
+    <iframe id="video" src=""></iframe>
+</div>
+
+<!-- MOVIES -->
+<div class="container" id="movies">
+
+    <div class="movie action" onclick="play('dQw4w9WgXcQ')">
+        <h3>Action Movie</h3>
+    </div>
+
+    <div class="movie comedy" onclick="play('9bZkp7q19f0')">
+        <h3>Comedy Movie</h3>
+    </div>
+
+    <div class="movie horror" onclick="play('3JZ_D3ELwOQ')">
+        <h3>Horror Movie</h3>
+    </div>
+
+</div>
+
+<script>
+function login() {
+    let u = document.getElementById("user").value;
+    let p = document.getElementById("pass").value;
+
+    if(u && p) {
+        document.getElementById("loginBox").style.display = "none";
+        document.querySelector("header").style.display = "block";
+        document.querySelector(".controls").style.display = "block";
+        document.querySelector(".container").style.display = "grid";
+        document.querySelector(".player").style.display = "block";
+    } else {
+        alert("Enter username and password");
+    }
+}
+
+function play(id) {
+    document.getElementById("video").src =
+    "https://www.youtube.com/embed/" + id;
+}
+
+function searchMovie() {
+    let input = document.getElementById("search").value.toLowerCase();
+    let movies = document.querySelectorAll(".movie");
+
+    movies.forEach(m => {
+        m.style.display = m.innerText.toLowerCase().includes(input)
+        ? "block" : "none";
+    });
+}
+
+function filterCategory(cat) {
+    let movies = document.querySelectorAll(".movie");
+
+    movies.forEach(m => {
+        if(cat === "all") m.style.display = "block";
+        else m.style.display = m.classList.contains(cat)
+        ? "block" : "none";
+    });
+}
+
+function addMovie() {
+    let id = document.getElementById("upload").value;
+
+    if(id) {
+        let div = document.createElement("div");
+        div.className = "movie";
+        div.innerHTML = "<h3>New Movie</h3>";
+        div.onclick = () => play(id);
+
+        document.getElementById("movies").appendChild(div);
+    }
+}
+</script>
+
+</body>
+</html>
